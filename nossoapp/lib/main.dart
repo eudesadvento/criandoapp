@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:nossoapp/questionario.dart';
 
@@ -24,6 +23,13 @@ class _PerguntaAppState extends State<PerguntaApp> {
         _pontuacaoTotal += pontuacao;
       });
     }
+  }
+
+  void _reiniciarQuestionario() {
+    setState(() {
+      _perguntasSelecionada = 0;
+      _pontuacaoTotal = 0;
+    });
   }
 
   bool get temPerguntaSelecionada {
@@ -63,19 +69,26 @@ class _PerguntaAppState extends State<PerguntaApp> {
   @override
   Widget build(Object context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Center(
-            child: Text('Perguntas'),
-          ),
+        home: Scaffold(
+      appBar: AppBar(
+        title: const Center(
+          child: Text('Quiz de Perguntas'),
         ),
-        body: temPerguntaSelecionada
-            ? Questionario(
-                perguntas: _perguntas,
-                perguntasSelecionada: _perguntasSelecionada,
-                quandoResponder: _responder,
-              )
-            :  Resultado(pontuacao: _pontuacaoTotal, ),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          temPerguntaSelecionada
+              ? Questionario(
+                  perguntas: _perguntas,
+                  perguntasSelecionada: _perguntasSelecionada,
+                  quandoResponder: _responder,
+                )
+              : Resultado(
+                   _pontuacaoTotal,_reiniciarQuestionario 
+                ),
+        ],
+      ),
     ));
   }
 }
